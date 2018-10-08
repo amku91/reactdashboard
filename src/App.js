@@ -18,6 +18,14 @@ class App extends Component {
                     fname: "Akash",
                     lname: "Kumar"
                 },
+                {
+                    fname: "Akash1",
+                    lname: "Kumar1"
+                },
+                {
+                    fname: "Akash1",
+                    lname: "Kumar1"
+                },
             ],
         };
     }
