@@ -3,8 +3,18 @@ import QuestionCounter from './QuestionCounter';
 import Question from './Question';
 import AnswerOptions from './AnswerOptions';
 import {Panel, Col, Row} from 'react-bootstrap';
+import axios from 'axios';
 
 class Quiz extends Component {
+    constructor(){
+        super();
+        this.handleQuestionAnswer = this.handleQuestionAnswer.bind(this);
+    }
+    handleQuestionAnswer(){
+        console.log('success');
+        axios.get('https://api.github.com/users/amku91')
+        .then(response => {console.log(response)}, error => {});
+    }
     render() {
         const questionData = this.props.questionData;
         const questionTotal = this.props.questionTotal;
@@ -26,7 +36,7 @@ class Quiz extends Component {
                 <Panel.Footer>
                 <Row className="show-grid">
                 <Col md={2} mdOffset={5}>
-                <span className="text-left">{questionData.counter > 0 ? (<button className="Previous-btn btn btn-danger" onClick={setPreviousQuestion} >Previous</button>) : (<div></div>)}</span>&nbsp;&nbsp;
+                <span className="text-left">{questionData.counter > 0 ? (<button className="Previous-btn btn btn-danger" onClick={(event) => {setPreviousQuestion();this.handleQuestionAnswer();}} >Previous</button>) : (<div></div>)}</span>&nbsp;&nbsp;
                 <span className="text-right">{questionData.counter < 4 ? (<button className="next-btn btn btn-success" onClick={setNextQuestion} >Next</button>) : (<div></div>)}</span>
                 </Col>
                 </Row>

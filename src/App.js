@@ -88,7 +88,7 @@ class App extends Component {
             <div className="clearfix"><br/></div>
             <div className="clearfix"><br/></div>
             <div className="clearfix"><br/></div>
-            <Grid>
+            <Grid fluid={true}>
                 <Row className="show-grid App container-fluid">
                 <Col xs={12} md={12}>
                 {this.renderQuiz()}
