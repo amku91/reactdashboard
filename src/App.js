@@ -17,12 +17,44 @@ class App extends Component {
             answer: '',
             selectedAnswers: {},
             result: '',
-            questionData: quizQuestions,
         };
+        this.setNextQuestion = this.setNextQuestion.bind(this);
+        this.setPreviousQuestion = this.setPreviousQuestion.bind(this);
+    }
+    componentWillMount(){
+        this.setState({
+            question: quizQuestions[0].question,
+            answerOptions : quizQuestions[0].answers,
+            allQuestions : quizQuestions
+          });
+    }
+    setNextQuestion(){
+        const counter = this.state.counter + 1;
+        const questionID = this.state.questionId + 1;
+        this.setState({
+            counter: counter,
+            questionId: questionID,
+            question: quizQuestions[counter].question,
+            answerOptions: quizQuestions[counter].answers,
+            answer: '',
+        });
+    }
+    setPreviousQuestion(){
+        const counter = this.state.counter - 1;
+        const questionID = this.state.questionId - 1;
+        this.setState({
+            counter: counter,
+            questionId: questionID,
+            question: quizQuestions[counter].question,
+            answerOptions: quizQuestions[counter].answers,
+            answer: '',
+        });
     }
     renderQuiz() {
         return (
-            <Quiz questionData={this.state} questionTotal={quizQuestions.length} />
+            <Quiz questionData={this.state} questionTotal={quizQuestions.length} 
+            setNextQuestion={this.setNextQuestion}
+            setPreviousQuestion={this.setPreviousQuestion} />
         );
     }
     render() {
