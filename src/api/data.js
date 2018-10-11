@@ -53,7 +53,7 @@ var quizQuestions = [
     },
     {
       question: "Which of these racing franchises would you prefer to play a game from?",
-      answerindex : 1,
+      answerindex : 2,
       answers: [
         {
           type: "IBM",
@@ -79,7 +79,7 @@ var quizQuestions = [
     },
     {
       question: "Which of these games do you think is best?",
-      answerindex : 1,
+      answerindex : 0,
       answers: [
         {
           type: "IBM",

@@ -3,6 +3,7 @@ import Table from './Table';
 import quizQuestions from './api/data';
 import Quiz from './components/Quiz';
 import {Bootstrap, Grid, Row, Col, Nav, Navbar, NavItem, NavDropdown, MenuItem} from 'react-bootstrap';
+import Result from './components/Result';
 
 class App extends Component {
     constructor(props) {
@@ -14,12 +15,46 @@ class App extends Component {
             question: '',
             answerOptions: [],
             allQuestions: [],
-            answer: '',
+            answer: -1,
             selectedAnswers: {},
-            result: '',
+            result: [],
+            showResult: false,
         };
         this.setNextQuestion = this.setNextQuestion.bind(this);
         this.setPreviousQuestion = this.setPreviousQuestion.bind(this);
+        this.handleAnswerSelected = this.handleAnswerSelected.bind(this);
+        this.viewResult = this.viewResult.bind(this);
+    }
+    viewResult(){
+        var answerRows = [];
+        var score = 0;
+        var total = this.state.allQuestions.length;
+        this.state.allQuestions.map((data, i) => {
+            answerRows.push({
+                "question": data.question,
+                "rightanswer": data.answers[data.answerindex].content,
+                "youranswer": (this.state.selectedAnswers[i] ? data.answers[this.state.selectedAnswers[i]].content : '')
+            });
+        });
+        //var score = answerRows.filter(row => row.youranswer === row.rightanswer);
+        //var score = answerRows.find(row => row.youranswer === row.rightanswer);
+        //var sum = answerRows.reduce((sum, row) => (row.youranswer === row.rightanswer) ? sum + 1 : sum );
+        console.log("score");
+        console.log(sum);
+        this.setState({
+            result: answerRows,
+            showResult: true,
+            score: (score ? ((score.length/total)*100) : 0)
+        });
+    }
+    handleAnswerSelected(e){
+        var _self = this;
+        var counter = _self.state.counter;
+        var obj = _self.state.selectedAnswers;
+        obj[counter] = e.target.value;
+        _self.setState({
+            selectedAnswers: obj
+        });
     }
     componentWillMount(){
         this.setState({
@@ -36,7 +71,7 @@ class App extends Component {
             questionId: questionID,
             question: quizQuestions[counter].question,
             answerOptions: quizQuestions[counter].answers,
-            answer: '',
+            answer: (this.state.selectedAnswers[counter] ? this.state.selectedAnswers[counter] : -1) ,
         });
     }
     setPreviousQuestion(){
@@ -47,14 +82,21 @@ class App extends Component {
             questionId: questionID,
             question: quizQuestions[counter].question,
             answerOptions: quizQuestions[counter].answers,
-            answer: '',
+            answer: (this.state.selectedAnswers[counter] ? this.state.selectedAnswers[counter] : -1),
         });
     }
     renderQuiz() {
         return (
-            <Quiz questionData={this.state} questionTotal={quizQuestions.length} 
+            <Quiz questionData={this.state} questionTotal={quizQuestions.length}
+            onViewResult={this.viewResult} 
+            onAnswerSelected={this.handleAnswerSelected}
             setNextQuestion={this.setNextQuestion}
             setPreviousQuestion={this.setPreviousQuestion} />
+        );
+    }
+    renderResult(){
+        return (
+            <Result result={this.state.result} />
         );
     }
     render() {
@@ -91,7 +133,7 @@ class App extends Component {
             <Grid fluid={true}>
                 <Row className="show-grid App container-fluid">
                 <Col xs={12} md={12}>
-                {this.renderQuiz()}
+                {this.state.showResult ? this.renderResult() : this.renderQuiz()}
                 </Col>
                 </Row>
             </Grid>

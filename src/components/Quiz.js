@@ -11,16 +11,16 @@ class Quiz extends Component {
         this.handleQuestionAnswer = this.handleQuestionAnswer.bind(this);
     }
     handleQuestionAnswer(){
-        console.log('success');
-        axios.get('https://api.github.com/users/amku91')
-        .then(response => {console.log(response)}, error => {});
+        //console.log('success');
+        // axios.get('https://api.github.com/users/amku91')
+        // .then(response => {console.log(response)}, error => {});
     }
     render() {
         const questionData = this.props.questionData;
         const questionTotal = this.props.questionTotal;
         const setNextQuestion = this.props.setNextQuestion;
         const setPreviousQuestion = this.props.setPreviousQuestion;
-        console.log(questionData);
+        const onViewResult = this.props.onViewResult;
         return (
             <Panel key={questionData.questionId} bsStyle="primary">
                 <Panel.Heading>
@@ -31,13 +31,14 @@ class Quiz extends Component {
                 <Panel.Body>
                 <Question question={questionData.question} />
                 <br/>
-                <AnswerOptions answers={questionData.answerOptions} />
+                <AnswerOptions selectedAnswer={this.props.questionData.answer} answers={questionData.answerOptions} onAnswerSelected={this.props.onAnswerSelected} />
                 </Panel.Body>
                 <Panel.Footer>
                 <Row className="show-grid">
-                <Col md={2} mdOffset={5}>
+                <Col md={6} mdOffset={3}>
                 <span className="text-left">{questionData.counter > 0 ? (<button className="Previous-btn btn btn-danger" onClick={(event) => {setPreviousQuestion();this.handleQuestionAnswer();}} >Previous</button>) : (<div></div>)}</span>&nbsp;&nbsp;
-                <span className="text-right">{questionData.counter < 4 ? (<button className="next-btn btn btn-success" onClick={setNextQuestion} >Next</button>) : (<div></div>)}</span>
+                <span className="text-right">{questionData.counter < 4 ? (<button className="next-btn btn btn-primary" onClick={setNextQuestion} >Next</button>) : (<div></div>)}</span>
+                <span className="pull-right" style={{"marginTop": '-35px'}}>{questionData.counter == 4 ? (<button className="next-btn btn btn-success" onClick={onViewResult} >View Result</button>) : (<div></div>)}</span>
                 </Col>
                 </Row>
                 </Panel.Footer>
